@@ -3,6 +3,7 @@ import {MagnifyingGlassIcon,PlusCircleIcon} from '@heroicons/react/24/outline'
 import {HomeIcon} from '@heroicons/react/24/solid'
 export default function Header() {
   return (
+    <div className="shadow-sm border-b sticky top-0 bg-white z-30">
         <div className="flex items-center justify-between max-w-6xl mx-4 xl:mx-auto">
             <div className="cursor-pointer h-24 w-24 relative hidden lg:inline-grid">
                 <Image
@@ -33,6 +34,7 @@ export default function Header() {
                 <PlusCircleIcon className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 "></PlusCircleIcon>
                 <img src="https://avatars.githubusercontent.com/u/70996469?v=4" alt="" className="h-10 rounded-full"></img>
             </div>
+        </div>
         </div>
   )
 }
