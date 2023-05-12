@@ -1,3 +1,4 @@
+import Posts from "./Posts";
 import Stories from "./Stories";
 
 export default function Feed() {
@@ -6,7 +7,9 @@ export default function Feed() {
         <section>
             {/* stories*/}
             <Stories></Stories>
+
             {/* posts*/}
+            <Posts></Posts>
         </section>
 
         <section>
