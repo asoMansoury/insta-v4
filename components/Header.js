@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import {MagnifyingGlassIcon} from '@heroicons/react/24/outline'
 export default function Header() {
   return (
         <div className="flex items-center justify-between max-w-6xl">
@@ -18,7 +18,13 @@ export default function Header() {
                 ></Image>
             </div>
 
-
+            {/** Middle */}
+            <div className="relative mt-1">
+                <div className="absolute top-2 left-2">
+                    <MagnifyingGlassIcon className="h-5 text-gray-500"></MagnifyingGlassIcon>
+                </div>
+                <input type="text" placeholder="Search" className="bg-gray-50 pl-10 border-gray-500 text-sm focus:ring-black focus:border-black rounded-md"></input>
+            </div>
             <h1>Right side</h1>
         </div>
   )
