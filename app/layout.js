@@ -1,6 +1,9 @@
+'use client';
+
 import './globals.css'
 import { Inter } from 'next/font/google'
-import Provider from '@/components/Provider'
+import Provider from '@/components/Provider';
+import {RecoilRoot} from 'recoil'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -13,9 +16,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={inter.className}>
         <Provider>
+          <RecoilRoot>
           <main>
             {children}
           </main>
+          </RecoilRoot>
         </Provider>
       </body>
     </html>
