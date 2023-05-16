@@ -1,7 +1,11 @@
+'use client'
 import Image from "next/image";
 import {MagnifyingGlassIcon,PlusCircleIcon} from '@heroicons/react/24/outline'
-import {HomeIcon} from '@heroicons/react/24/solid'
+import {HomeIcon} from '@heroicons/react/24/solid';
+import {useSession,signOut,signIn} from 'next-auth/react';
 export default function Header() {
+    const {data: session} = useSession();
+
   return (
     <div className="shadow-sm border-b sticky top-0 bg-white z-30">
         <div className="flex items-center justify-between max-w-6xl mx-4 xl:mx-auto">
@@ -31,8 +35,17 @@ export default function Header() {
             {/** Right side */}
             <div className="flex space-x-4 items-center">
                 <HomeIcon className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform duration-200 "></HomeIcon>
-                <PlusCircleIcon className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 "></PlusCircleIcon>
-                <img src="https://avatars.githubusercontent.com/u/70996469?v=4" alt="" className="h-10 rounded-full"></img>
+                {session? (
+                    <>
+                        <PlusCircleIcon className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 "></PlusCircleIcon>
+                        <img
+                            onClick={signOut}  
+                            src={session.user.image} alt="" className="h-10 rounded-full cursor-pointer"></img>
+                    </>
+                ):(
+                    <button onClick={signIn}>Sign In</button>
+                )}
+
             </div>
         </div>
         </div>
