@@ -12,17 +12,17 @@ import {getStorage} from "firebase/storage";
 
 const firebaseConfig = {
 
-  apiKey:  process.env.FIREBASE_API_KEY ,
+  apiKey:  process.env.NEXTAUTH_PUBLIC_FIREBASE_API_KEY ,
 
-  authDomain: process.env.FIREASE_AUTH_DOMAIN,
+  authDomain: process.env.NEXTAUTH_PUBLIC_FIREASE_AUTH_DOMAIN,
 
-  projectId: process.env.FIREBASE_PROJECT_ID,
+  projectId: process.env.NEXTAUTH_PUBLIC_FIREBASE_PROJECT_ID,
 
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKER,
+  storageBucket: process.env.NEXTAUTH_PUBLIC_FIREBASE_STORAGE_BUCKER,
 
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+  messagingSenderId: process.env.NEXTAUTH_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
 
-  appId: process.env.FIREBASE_APP_ID
+  appId: process.env.NEXTAUTH_PUBLIC_FIREBASE_APP_ID
 
 };
 
