@@ -5,7 +5,7 @@ import {HomeIcon} from '@heroicons/react/24/solid';
 import {useSession,signOut,signIn} from 'next-auth/react';
 import { useRecoilState } from "recoil";
 import { modalState } from "@/atom/modalAtom";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 export default function Header() {
     const {data: session} = useSession();
     const [open, setOpen] = useRecoilState(modalState);

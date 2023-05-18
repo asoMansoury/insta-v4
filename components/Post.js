@@ -1,8 +1,24 @@
+'use client'
+import { db } from '@/firebase';
 import {HeartIcon,ChatBubbleBottomCenterTextIcon,BookmarkIcon, } from '@heroicons/react/24/outline'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import {useSession} from 'next-auth/react';
+import { useState } from 'react';
 
 export default function Post({caption,img,username,userImg,id}) {
   const {data: session} = useSession();
+  const [comment,setComment] = useState("");
+  async function sendComment(event){
+    event.preventDefault();
+    const commentToSend = comment;
+    setComment("");
+    await addDoc(collection(db,"posts",id,"comments",),{
+      comment:commentToSend,
+      username:session.user.username,
+      userImage:session.user.userimage,
+      timestamp:serverTimestamp()
+    })
+  }
   return (
     <div className='bg-white my-7'>
         {/**Post Header */}
@@ -39,8 +55,11 @@ export default function Post({caption,img,username,userImg,id}) {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 " fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <input className='border-none flex-1 focus:ring-0' type="text" placeholder="Enter your comment"></input>
-            <button className='text-blue-400 font-bold'>Post</button>
+            <input 
+                value={comment}
+                onChange={(e)=>setComment(e.target.value)}
+                className='border-none flex-1 focus:ring-0' type="text" placeholder="Enter your comment"></input>
+            <button type="submit" onClick={sendComment} disabled={!comment.trim()} className='text-blue-400 font-bold disabled:text-blue-200'>Post</button>
         </form>
           )
         }
