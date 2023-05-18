@@ -1,4 +1,8 @@
+'use client';
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import Post from "./Post"
+import { useEffect, useState } from "react";
+import { db } from "@/firebase";
 
 export default function Posts() {
   const posts = [
@@ -17,6 +21,14 @@ export default function Posts() {
         caption:"It's a great and pretty nature scene I've seen in my life!"
     }
   ]
+  const [postsFirebase,setPostsFirebase] = useState([]);
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(collection(db,"posts"),orderBy("timestamp","desc")),(snapshotEquals) => {
+        setPostsFirebase(snapshotEquals.docs);
+      }
+    );
+  }, [])
   return (
     <div>
         {posts.map(post => (
