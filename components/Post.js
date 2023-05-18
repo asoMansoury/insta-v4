@@ -1,7 +1,8 @@
 'use client'
 import { db } from '@/firebase';
-import {HeartIcon,ChatBubbleBottomCenterTextIcon,BookmarkIcon, } from '@heroicons/react/24/outline'
-import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from 'firebase/firestore';
+import {HeartIcon,ChatBubbleBottomCenterTextIcon,BookmarkIcon } from '@heroicons/react/24/outline'
+import { HeartIcon as HeartIconFilled} from '@heroicons/react/24/solid'
+import { addDoc, collection, deleteDoc, onSnapshot, orderBy, query, serverTimestamp, setDoc } from 'firebase/firestore';
 import {useSession} from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Moment from 'react-moment';
@@ -10,14 +11,16 @@ export default function Post({caption,img,username,userImg,id}) {
   const {data: session} = useSession();
   const [comment,setComment] = useState("");
   const [comments,setComments] = useState([]);
+  const [hasLiked,setHasLiked] = useState(false);
+  const [likes,setLikes] = useState([]);
   useEffect(()=>{
-    const unsubscribe =onSnapshot(
-     query(collection(db,"posts",id,"comments"),orderBy("timestamp","desc")),(snapshot) =>{
-      setComments(snapshot.docs)
-    }
-    )
+    // const unsubscribe =onSnapshot(
+    //  query(collection(db,"posts",id,"comments"),orderBy("timestamp","desc")),(snapshot) =>{
+    //     setComments(snapshot.docs)
+    //   }
+    // )
+  },[db,id]);
 
-  },[db,id])
   async function sendComment(event){
     event.preventDefault();
     const commentToSend = comment;
@@ -27,8 +30,33 @@ export default function Post({caption,img,username,userImg,id}) {
       username:session.user.username,
       userImage:session.user.userimage,
       timestamp:serverTimestamp()
-    })
+    });
+  
+    useEffect(()=>{
+      const unsubscribe = onSnapshot(collection(db,"posts",id,"likes"),(snapshot) =>{
+        setLikes(snapshot.docs)
+      })
+    },[db])
+    async function likePost(){
+      if(hasLiked){
+        await deleteDoc(collection(db,"posts",id,"likes",session?.user.uid))
+      }else{
+        await setDoc(doc(db,"posts",id,"likes",session?.user.uid),{
+          username:session.user.username,
+          userImage:session.user.userimage,
+          timestamp:serverTimestamp()
+        })
+      }
+    }
+
+    useEffect(()=>{
+      setHasLiked(
+        likes.findIndex(like=>like.id === session.user.uid)!== -1
+      )
+    },[likes]);
   }
+
+  
   return (
     <div className='bg-white my-7'>
         {/**Post Header */}
@@ -46,7 +74,13 @@ export default function Post({caption,img,username,userImg,id}) {
           session&& (
             <div className='flex justify-between p-x-4 pt-4'>
             <div className='flex space-x-4'>
-              <HeartIcon className='btn'></HeartIcon>
+              {
+                hasLiked ?(
+                  <HeartIconFilled onClick={likePost} className='text-red-400'></HeartIconFilled>
+                ):(
+                  <HeartIcon className='btn'></HeartIcon>
+                )
+              }
               <ChatBubbleBottomCenterTextIcon className='btn'></ChatBubbleBottomCenterTextIcon>
             </div>
             <BookmarkIcon className='btn'></BookmarkIcon>
