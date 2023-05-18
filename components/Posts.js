@@ -28,7 +28,7 @@ export default function Posts() {
         setPostsFirebase(snapshotEquals.docs);
       }
     );
-  }, [])
+  }, [db])
   return (
     <div>
         {posts.map(post => (

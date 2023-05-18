@@ -5,9 +5,11 @@ import {HomeIcon} from '@heroicons/react/24/solid';
 import {useSession,signOut,signIn} from 'next-auth/react';
 import { useRecoilState } from "recoil";
 import { modalState } from "@/atom/modalAtom";
+import { useRouter } from "next/router";
 export default function Header() {
     const {data: session} = useSession();
     const [open, setOpen] = useRecoilState(modalState);
+    const router = useRouter();
 
   return (
     <div className="shadow-sm border-b sticky top-0 bg-white z-30">
@@ -15,6 +17,7 @@ export default function Header() {
             <div className="cursor-pointer h-24 w-24 relative hidden lg:inline-grid">
                 <Image
                     layout="fill"
+                    onClick={()=> router.push('/')}
                     className="object-contain"
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhJUjiTX51GbOltIaxmJE7Zk1Xjx1Sa2Q7sw&usqp=CAU"
                 ></Image>
@@ -22,6 +25,7 @@ export default function Header() {
             <div className="cursor-pointer h-24 w-10 relative lg:hidden">
                 <Image
                     layout="fill"
+                    onClick={()=> router.push('/')}
                     className="object-contain"
                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/768px-Instagram_logo_2016.svg.png"
                 ></Image>
@@ -37,7 +41,9 @@ export default function Header() {
 
             {/** Right side */}
             <div className="flex space-x-4 items-center">
-                <HomeIcon className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform duration-200 "></HomeIcon>
+                <HomeIcon
+                        onClick={()=> router.push('/')} 
+                        className="hidden md:inline-flex h-6 cursor-pointer hover:scale-125 transition-transform duration-200 "></HomeIcon>
                 {session? (
                     <>
                         <PlusCircleIcon onClick={()=> setOpen(true)} className="h-6 cursor-pointer hover:scale-125 transition-transform duration-200 "></PlusCircleIcon>

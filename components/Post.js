@@ -1,5 +1,8 @@
 import {HeartIcon,ChatBubbleBottomCenterTextIcon,BookmarkIcon, } from '@heroicons/react/24/outline'
+import {useSession} from 'next-auth/react';
+
 export default function Post({caption,img,username,userImg,id}) {
+  const {data: session} = useSession();
   return (
     <div className='bg-white my-7'>
         {/**Post Header */}
@@ -13,25 +16,35 @@ export default function Post({caption,img,username,userImg,id}) {
         <img className='object-cover w-full' src={img}></img>
 
         {/**Post Buttons */}
-        <div className='flex justify-between p-x-4 pt-4'>
-          <div className='flex space-x-4'>
-            <HeartIcon className='btn'></HeartIcon>
-            <ChatBubbleBottomCenterTextIcon className='btn'></ChatBubbleBottomCenterTextIcon>
+        {
+          session&& (
+            <div className='flex justify-between p-x-4 pt-4'>
+            <div className='flex space-x-4'>
+              <HeartIcon className='btn'></HeartIcon>
+              <ChatBubbleBottomCenterTextIcon className='btn'></ChatBubbleBottomCenterTextIcon>
+            </div>
+            <BookmarkIcon className='btn'></BookmarkIcon>
           </div>
-          <BookmarkIcon className='btn'></BookmarkIcon>
-        </div>
+          )
+        }
+
 
         {/**Post comments */}
         <p className='p-5 truncate'><span className='font-bold mr-2'>{username}</span>{caption}</p>
 
         {/**Post input box */}
-        <form className="flex items-center p-4">
+        {
+          session && (
+            <form className="flex items-center p-4">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7 " fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <input className='border-none flex-1 focus:ring-0' type="text" placeholder="Enter your comment"></input>
             <button className='text-blue-400 font-bold'>Post</button>
         </form>
+          )
+        }
+
     </div>
   )
 }
